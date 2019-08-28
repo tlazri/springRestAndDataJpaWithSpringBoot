@@ -40,6 +40,7 @@ public class EmployeeRestController {
 
 
     @ApiOperation(value = "Récupère la liste des employées")
+    @GetMapping
     public List<EmployeeResource> getEmployees() {
         return employeeService.retrieveEmployees();
     }
