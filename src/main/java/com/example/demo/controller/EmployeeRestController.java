@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.employee.Employee;
+import com.example.demo.exception.Checks;
 import com.example.demo.service.EmployeeService;
 
 /**
@@ -23,43 +24,47 @@ import com.example.demo.service.EmployeeService;
 @RestController
 public class EmployeeRestController {
 
-    @Autowired
-    private EmployeeService employeeService;
+	@Autowired
+	private EmployeeService employeeService;
 
-    public void setEmployeeService(EmployeeService employeeService) {
-        this.employeeService = employeeService;
-    }
+	public void setEmployeeService(EmployeeService employeeService) {
+		this.employeeService = employeeService;
+	}
 
-    @GetMapping("/api/employees")
-    public List<EmployeeResource> getEmployees() {
-        return employeeService.retrieveEmployees();
-    }
+	@GetMapping("/api/employees")
+	public List<EmployeeResource> getEmployees() {
+		return employeeService.retrieveEmployees();
+	}
 
-    @GetMapping("/api/employees/{employeeId}")
-    public EmployeeResource getEmployee(@PathVariable(name = "employeeId") Long employeeId) {
-        return employeeService.getEmployee(employeeId);
-    }
+	@GetMapping("/api/employees/{employeeId}")
+	public EmployeeResource getEmployee(@PathVariable(name = "employeeId") Long employeeId) {
+		// EmployeeResource employee=employeeService.getEmployee(employeeId);
+		// EmployeeResource checkEntityExists =
+		return Checks.checkEntityExists(employeeService.getEmployee(employeeId),
+				"No Employee found for id  = " + employeeId);
 
-    @PostMapping("/api/employees")
-    public void saveEmployee(Employee employee) {
-        employeeService.saveEmployee(employee);
-        System.out.println("Employee Saved Successfully");
-    }
+		// return employee;
+	}
 
-    @DeleteMapping("/api/employees/{employeeId}")
-    public void deleteEmployee(@PathVariable(name = "employeeId") Long employeeId) {
-        employeeService.deleteEmployee(employeeId);
-        System.out.println("Employee Deleted Successfully");
-    }
+	@PostMapping("/api/employees")
+	public void saveEmployee(Employee employee) {
+		employeeService.saveEmployee(employee);
+		System.out.println("Employee Saved Successfully");
+	}
 
-    @PutMapping("/api/employees/{employeeId}")
-    public void updateEmployee(@RequestBody Employee employee,
-                               @PathVariable(name = "employeeId") Long employeeId) {
-        EmployeeResource emp = employeeService.getEmployee(employeeId);
-        if (emp != null) {
-            employeeService.updateEmployee(emp.getEmployee());
-        }
+	@DeleteMapping("/api/employees/{employeeId}")
+	public void deleteEmployee(@PathVariable(name = "employeeId") Long employeeId) {
+		employeeService.deleteEmployee(employeeId);
+		System.out.println("Employee Deleted Successfully");
+	}
 
-    }
+	@PutMapping("/api/employees/{employeeId}")
+	public void updateEmployee(@RequestBody Employee employee, @PathVariable(name = "employeeId") Long employeeId) {
+		EmployeeResource emp = employeeService.getEmployee(employeeId);
+		if (emp != null) {
+			employeeService.updateEmployee(emp.getEmployee());
+		}
+
+	}
 
 }
