@@ -53,8 +53,8 @@ public class EmployeeRestController {
 
     @ApiOperation(value = "Sau un employée par ID")
     @PostMapping
-    public void saveEmployee(Employee employee) {
-        employeeService.saveEmployee(employee);
+    public void saveEmployee(@RequestBody EmployeeResource employee) {
+        employeeService.saveEmployee(employee.getEmployee());
         System.out.println("Employee Saved Successfully");
     }
 

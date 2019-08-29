@@ -47,8 +47,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void saveEmployee(Employee employee) {
-        // TODO Auto-generated method stub
-
+    	 employeeRepository.save(employee);
     }
 
     @Override
