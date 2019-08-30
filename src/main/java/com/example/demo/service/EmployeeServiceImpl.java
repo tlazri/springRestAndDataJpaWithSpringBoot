@@ -2,12 +2,13 @@ package com.example.demo.service;
 
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.employee.Employee;
+import com.example.demo.model.Employee;
 import com.example.demo.employee.EmployeeRepository;
 import com.example.demo.exception.Checks;
 import com.example.demo.resource.EmployeeResource;
@@ -35,8 +36,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResource getEmployee(Long employeeId) {
-    	Employee employee = Checks.checkEntityExists(employeeRepository.findByIdEmployee(employeeId),"No Employee found for id  = " + employeeId);
-        return new EmployeeResource(employee);
+    	Optional<Employee> employee = Checks.checkEntityExists(employeeRepository.findById(employeeId),"No Employee found for id  = " + employeeId);
+        return new EmployeeResource(employee.get());
+    }
+
+    @Override
+    public EmployeeResource getEmployeeByName(String name) {
+        return new EmployeeResource(employeeRepository.findByName(name));
     }
 
     @Override
@@ -47,12 +53,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void saveEmployee(Employee employee) {
-    	 employeeRepository.save(employee);
+        employeeRepository.save(employee);
     }
 
     @Override
     public void deleteEmployee(Long employeeId) {
     	 employeeRepository.deleteById(employeeId);
     }
+
+
 
 }
