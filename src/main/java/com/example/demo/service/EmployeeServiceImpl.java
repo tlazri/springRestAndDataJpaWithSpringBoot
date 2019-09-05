@@ -1,17 +1,16 @@
 package com.example.demo.service;
 
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
+import com.example.demo.employee.EmployeeRepository;
+import com.example.demo.exception.Checks;
+import com.example.demo.model.Employee;
+import com.example.demo.resource.EmployeeResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.model.Employee;
-import com.example.demo.employee.EmployeeRepository;
-import com.example.demo.exception.Checks;
-import com.example.demo.resource.EmployeeResource;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 /**
@@ -23,11 +22,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    public void setEmployeeRepository(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
-    }
-
-	@Override
+    @Override
     public List<EmployeeResource> retrieveEmployees() {
         List<Employee> employees = (List<Employee>) employeeRepository.findAll();
         final List<EmployeeResource> employeeResources = employees.stream().map(EmployeeResource::new).collect(Collectors.toList());
